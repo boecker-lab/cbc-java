@@ -1,0 +1,13 @@
+stages:
+  - build
+
+java-build:
+  # select the most appropriate image for your project
+  image: azul/zulu-openjdk:11-latest
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+    ARTIFACTORY_URL: "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/maven"
+  stage: build
+  script:
+    - echo "$ARTIFACTORY_URL"
+    - ./gradlew publishJavaCBCPublicationToGitLabRepository -P "de.unijena.bioinf.build.artifactory.url=$ARTIFACTORY_URL" -P "de.unijena.bioinf.build.artifactory.deploy-token=$CI_JOB_TOKEN"

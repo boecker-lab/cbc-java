@@ -1,0 +1,48 @@
+description 'JNI Java library (cbc-java) for COIN-OR CBC Solver'
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+    group 'de.unijena.bioinf'
+    version '2.10-SNAPSHOT' //corresponds tp cbc version
+
+    publishing {
+        publications {
+            javaCBC(MavenPublication) {
+                from components.java
+            }
+        }
+
+        repositories {
+            maven {
+                url= project.findProperty("de.unijena.bioinf.build.artifactory.url")
+                name="GitLab"
+                credentials(HttpHeaderCredentials) {
+                    name = "Deploy-Token"
+                    value = project.findProperty("de.unijena.bioinf.build.artifactory.deploy-token")
+                }
+                authentication {
+                    header(HttpHeaderAuthentication)
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:2.0.6'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
