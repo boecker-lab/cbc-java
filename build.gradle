@@ -13,7 +13,7 @@ allprojects {
 
     sourceCompatibility = 11
     targetCompatibility = 11
-    group 'de.unijena.bioinf'
+    group 'de.unijena.bioinf.cbc-java'
     version '2.10-SNAPSHOT' //corresponds tp cbc version
 
     publishing {
