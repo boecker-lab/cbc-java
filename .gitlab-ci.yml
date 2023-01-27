@@ -11,3 +11,5 @@ java-build:
   script:
     - echo "$ARTIFACTORY_URL"
     - ./gradlew publishJavaCBCPublicationToGitLabRepository -P "de.unijena.bioinf.build.artifactory.url=$ARTIFACTORY_URL" -P "de.unijena.bioinf.build.artifactory.deploy-token=$CI_JOB_TOKEN"
+  tags:
+    - kubernetes
