@@ -121,55 +121,55 @@ public class CLPModel_JNI {
 
     native double n_getScore(long self);
 
-    void dispose(){
+    public void dispose(){
         n_dispose(wrapper_ptr);
     }
 
-    double getInfinity(){
+    public double getInfinity(){
         return n_getInfinity(wrapper_ptr);
     }
 
-    void setObjective(double[] objective){
+    public void setObjective(double[] objective){
         n_setObjective(wrapper_ptr, objective);
     }
 
-	void setTimeLimit(double seconds){
+    public void setTimeLimit(double seconds){
         n_setTimeLimit(wrapper_ptr, seconds);
     }
 
-	void setColBounds(double[] col_lb, double[] col_ub){
+    public void setColBounds(double[] col_lb, double[] col_ub){
         n_setColBounds(wrapper_ptr, col_lb, col_ub);
     }
 
-	void setColStart(double start[]){
+    public void setColStart(double start[]){
         n_setColStart(wrapper_ptr, start);
     }
 
-	void addFullRow(double row[], double lb, double ub){
+    public void addFullRow(double row[], double lb, double ub){
         n_addFullRow(wrapper_ptr, row, lb, ub);
     }
 
-	void addSparseRow(double[] elems, int[] indices, double lb, double ub){
+    public void addSparseRow(double[] elems, int[] indices, double lb, double ub){
         n_addSparseRow(wrapper_ptr, elems, indices, lb, ub);
     }
 
-	void addSparseRowCached(double[] elems, int[] indices, double lb, double ub){
+    public void addSparseRowCached(double[] elems, int[] indices, double lb, double ub){
         n_addSparseRowCached(wrapper_ptr, elems, indices, lb, ub);
     }
 
-	void addSparseRows(int numrows, int rowstarts[], double elems[], int indices[], double lb[], double ub[]){
+    public void addSparseRows(int numrows, int rowstarts[], double elems[], int indices[], double lb[], double ub[]){
         n_addSparseRows(wrapper_ptr, numrows, rowstarts, elems, indices, lb, ub);
     }
 
-    int solve(){ // returns ReturnStatus
+    public int solve(){ // returns ReturnStatus
         return n_solve(wrapper_ptr);
     }
 
-    double[] getColSolution(){
+    public double[] getColSolution(){
         return n_getColSolution(wrapper_ptr);
     }
 
-    double getScore(){
+    public double getScore(){
         return n_getScore(wrapper_ptr);
     }
 }
