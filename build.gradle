@@ -21,8 +21,8 @@ allprojects {
                 url= project.findProperty("de.unijena.bioinf.build.artifactory.url")
                 name="GitLab"
                 credentials(HttpHeaderCredentials) {
-                    name = "JOB-TOKEN"
-                    value = project.findProperty("de.unijena.bioinf.build.artifactory.deploy-token")
+                    name = project.findProperty("de.unijena.bioinf.build.artifactory.token.name")
+                    value = project.findProperty("de.unijena.bioinf.build.artifactory.token")
                 }
                 authentication {
                     header(HttpHeaderAuthentication)

@@ -10,6 +10,6 @@ java-build:
   stage: build
   script:
     - echo "$ARTIFACTORY_URL"
-    - ./gradlew publishJavaCBCPublicationToGitLabRepository -P "de.unijena.bioinf.build.artifactory.url=$ARTIFACTORY_URL" -P "de.unijena.bioinf.build.artifactory.deploy-token=$CI_JOB_TOKEN"
+    - ./gradlew publishJavaCBCPublicationToGitLabRepository -P "de.unijena.bioinf.build.artifactory.url=$ARTIFACTORY_URL" -P "de.unijena.bioinf.build.artifactory.token=$CI_JOB_TOKEN" -P "de.unijena.bioinf.build.artifactory.token.name=JOB-TOKEN"
   tags:
     - kubernetes
