@@ -9,8 +9,7 @@ java-build:
     ARTIFACTORY_URL: "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/maven"
   stage: build
   script:
-#    - echo "$ARTIFACTORY_URL"
-#    - ./gradlew publishJavaCBCPublicationToGitLabRepository -P "de.unijena.bioinf.build.artifactory.url=$ARTIFACTORY_URL" -P "de.unijena.bioinf.build.artifactory.token=$CI_JOB_TOKEN" -P "de.unijena.bioinf.build.artifactory.token.name=JOB-TOKEN" -P "de.unijena.bioinf.build.artifactory.username=$ARTIFACTORY_USERNAME" -P "de.unijena.bioinf.build.artifactory.password=$ARTIFACTORY_TOKEN"
+    - ./gradlew publishJavaCBCPublicationToGitLabRepository -P "de.unijena.bioinf.build.artifactory.url=$ARTIFACTORY_URL" -P "de.unijena.bioinf.build.artifactory.token=$CI_JOB_TOKEN" -P "de.unijena.bioinf.build.artifactory.token.name=JOB-TOKEN"
     - ./gradlew artifactoryPublish -P "de.unijena.bioinf.build.artifactory.username=$ARTIFACTORY_USERNAME" -P "de.unijena.bioinf.build.artifactory.password=$ARTIFACTORY_TOKEN"
   tags:
     - kubernetes
