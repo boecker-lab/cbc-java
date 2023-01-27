@@ -1,8 +1,15 @@
+plugins {
+    id "com.jfrog.artifactory" version "4.31.0"
+}
+
+
 description 'JNI Java library (cbc-java) for COIN-OR CBC Solver'
 
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
+    apply plugin: "com.jfrog.artifactory"
+
 
     sourceCompatibility = 11
     targetCompatibility = 11
@@ -44,5 +51,24 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+//artifactoryPublish.skip = true
+artifactory {
+    contextUrl = 'https://bio.informatik.uni-jena.de/repository/'
+    publish {
+        repository {
+            if (version.toString().endsWith('-SNAPSHOT'))
+                repoKey = 'libs-snapshot-local'
+            else
+                repoKey = 'libs-release-local'
+
+            username = project.findProperty('de.unijena.bioinf.build.artifactory.username')
+            password = project.findProperty('de.unijena.bioinf.build.artifactory.password')
+        }
+        defaults {
+            publications('javaCBC')
+        }
+    }
 }
 
