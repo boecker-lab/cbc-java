@@ -18,8 +18,9 @@
  *  You should have received a copy of the GNU General Public License along with SIRIUS. If not, see <https://www.gnu.org/licenses/lgpl-3.0.txt>
  */
 
-package de.unijena.bioinf.coinor.cbc;
+package de.unijena.bioinf.FragmentationTreeConstruction.computation.tree.ilp;
 
+import cz.adamh.utils.NativeUtils;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
@@ -41,47 +42,56 @@ public class CLPModel_JNI {
     }
 
     static {
-		List<String> dependencies;
-		String os = System.getProperty("os.name").toLowerCase();
-		String arch = System.getProperty("os.arch").toLowerCase();
+        String jniWrapper = null;
+        List<String> dependencies;
+        String os = System.getProperty("os.name").toLowerCase();
+        String arch = System.getProperty("os.arch").toLowerCase();
 //		System.out.println("os: " + os + ", arch: " + arch);
-		if (os.contains("win")){
-			// NOTE: has to be in correct order for windows
-			if (arch.contains("64"))
-				dependencies = Arrays.asList(
-					"libstdc++-6", "libwinpthread-1", "libgmp-10", "zlib1", "libbz2-1", "libgcc_s_seh-1",
-					"libquadmath-0", "libgfortran-5");
-			else
-				dependencies = Arrays.asList(
-					"libstdc++-6", "libgcc_s_dw2-1", "libwinpthread-1", "libgmp-10", "zlib1", "libbz2-1", "libgfortran-5");
-		} else if (os.contains("mac") || os.contains("darwin")){
-			// fake pre-loading to circumvent lazy unpacking of resources
-			dependencies = Arrays.asList(
-				"Clp", "CoinUtils", "Osi", "OsiClp", "coinblas", "coinglpk", "coinlapack", "coinmetis",
-				"coinmumps", "gcc_s", "gfortran", "quadmath", "stdc++");
-		} else{
-			// fake pre-loading to circumvent lazy unpacking of resources
-			dependencies = Arrays.asList(
-				"Clp.1", "CoinUtils.3", "Osi.1", "OsiClp.1", "coinasl.1", "coinblas.1", "coinglpk.1", "coinlapack.1", "coinmetis.1",
-				"coinmumps.1", "gcc_s.1", "gfortran.5", "gmp.10", "quadmath.0", "stdc++.6");
-		}
-		for (String dep : dependencies) {
-			try {
+        if (os.contains("win")) {
+            // NOTE: has to be in correct order for windows
+            if (arch.contains("64")) {
+                jniWrapper = "/win-x86-64/CLPModelWrapper_JNI.dll";
+                dependencies = Arrays.asList(
+                        "libstdc++-6", "libwinpthread-1", "libgmp-10", "zlib1", "libbz2-1", "libgcc_s_seh-1",
+                        "libquadmath-0", "libgfortran-5");
+            } else {
+                dependencies = Arrays.asList(
+                        "libstdc++-6", "libgcc_s_dw2-1", "libwinpthread-1", "libgmp-10", "zlib1", "libbz2-1", "libgfortran-5");
+            }
+        } else if (os.contains("mac") || os.contains("darwin")) {
+            jniWrapper = "/mac-x86-64/libCLPModelWrapper_JNI.dylib";
+            // fake pre-loading to circumvent lazy unpacking of resources
+            dependencies = Arrays.asList(
+                    "Clp", "CoinUtils", "Osi", "OsiClp", "coinblas", "coinglpk", "coinlapack", "coinmetis",
+                    "coinmumps", "gcc_s", "gfortran", "quadmath", "stdc++");
+        } else {
+            jniWrapper = "/linux-x86-64/libCLPModelWrapper_JNI.so";
+            // fake pre-loading to circumvent lazy unpacking of resources
+            dependencies = Arrays.asList(
+                    "Clp.1", "CoinUtils.3", "Osi.1", "OsiClp.1", "coinasl.1", "coinblas.1", "coinglpk.1", "coinlapack.1", "coinmetis.1",
+                    "coinmumps.1", "gcc_s.1", "gfortran.5", "gmp.10", "quadmath.0", "stdc++.6");
+        }
+        for (String dep : dependencies) {
+            try {
                 LoggerFactory.getLogger(CLPModel_JNI.class).debug("Loading: " + dep);
-				System.loadLibrary(dep);
-			} catch (UnsatisfiedLinkError e) {
+                System.loadLibrary(dep);
+            } catch (UnsatisfiedLinkError e) {
                 LoggerFactory.getLogger(CLPModel_JNI.class).debug("Error when loading: " + dep, e);
-				// does not matter
-			}
-		}
+                // does not matter
+            }
+        }
 
-		// load the wrapper library
+        // load the wrapper library
         try {
-            System.loadLibrary("CLPModelWrapper_JNI");
+            if (jniWrapper == null || jniWrapper.isBlank())
+                throw new IllegalArgumentException("Could not detect os and architecture or it is unknown. Cannot load CLPModelWrapper_JNI!");
+            NativeUtils.loadLibraryFromJar(jniWrapper);
         } catch (Exception e) {
-			// this should not happen
-            LoggerFactory.getLogger(CLPModel_JNI.class).debug("Error when loading: 'CLPModelWrapper_JNI'", e);
-            throw e;
+            // this should not happen
+            LoggerFactory.getLogger(CLPModel_JNI.class).error("Error when loading: 'CLPModelWrapper_JNI'", e);
+            if (e instanceof RuntimeException)
+                throw (RuntimeException) e;
+            else throw new RuntimeException(e);
         }
     }
 
@@ -89,7 +99,7 @@ public class CLPModel_JNI {
     // instances are managed in the Wrapper class and accessed by index
     private long wrapper_ptr;
 
-    public CLPModel_JNI(int ncols, int obj_sense){
+    public CLPModel_JNI(int ncols, int obj_sense) {
         wrapper_ptr = n_ctor(ncols, obj_sense);
     }
 
@@ -121,55 +131,55 @@ public class CLPModel_JNI {
 
     native double n_getScore(long self);
 
-    public void dispose(){
+    public void dispose() {
         n_dispose(wrapper_ptr);
     }
 
-    public double getInfinity(){
+    public double getInfinity() {
         return n_getInfinity(wrapper_ptr);
     }
 
-    public void setObjective(double[] objective){
+    public void setObjective(double[] objective) {
         n_setObjective(wrapper_ptr, objective);
     }
 
-    public void setTimeLimit(double seconds){
+    public void setTimeLimit(double seconds) {
         n_setTimeLimit(wrapper_ptr, seconds);
     }
 
-    public void setColBounds(double[] col_lb, double[] col_ub){
+    public void setColBounds(double[] col_lb, double[] col_ub) {
         n_setColBounds(wrapper_ptr, col_lb, col_ub);
     }
 
-    public void setColStart(double start[]){
+    public void setColStart(double start[]) {
         n_setColStart(wrapper_ptr, start);
     }
 
-    public void addFullRow(double row[], double lb, double ub){
+    public void addFullRow(double row[], double lb, double ub) {
         n_addFullRow(wrapper_ptr, row, lb, ub);
     }
 
-    public void addSparseRow(double[] elems, int[] indices, double lb, double ub){
+    public void addSparseRow(double[] elems, int[] indices, double lb, double ub) {
         n_addSparseRow(wrapper_ptr, elems, indices, lb, ub);
     }
 
-    public void addSparseRowCached(double[] elems, int[] indices, double lb, double ub){
+    public void addSparseRowCached(double[] elems, int[] indices, double lb, double ub) {
         n_addSparseRowCached(wrapper_ptr, elems, indices, lb, ub);
     }
 
-    public void addSparseRows(int numrows, int rowstarts[], double elems[], int indices[], double lb[], double ub[]){
+    public void addSparseRows(int numrows, int rowstarts[], double elems[], int indices[], double lb[], double ub[]) {
         n_addSparseRows(wrapper_ptr, numrows, rowstarts, elems, indices, lb, ub);
     }
 
-    public int solve(){ // returns ReturnStatus
+    public int solve() { // returns ReturnStatus
         return n_solve(wrapper_ptr);
     }
 
-    public double[] getColSolution(){
+    public double[] getColSolution() {
         return n_getColSolution(wrapper_ptr);
     }
 
-    public double getScore(){
+    public double getScore() {
         return n_getScore(wrapper_ptr);
     }
 }
