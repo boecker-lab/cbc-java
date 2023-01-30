@@ -13,7 +13,7 @@ allprojects {
     sourceCompatibility = 11
     targetCompatibility = 11
     group 'de.unijena.bioinf.cbc-java'
-    version '2.10-SNAPSHOT' //corresponds tp cbc version
+    version '2.10.8-SNAPSHOT' //corresponds tp cbc version
 
     publishing {
         publications {
@@ -39,6 +39,7 @@ allprojects {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 
     maven {
@@ -51,10 +52,11 @@ repositories {
 }
 
 dependencies {
+    //all sub projects as dependency
     project.subprojects.forEach {
         implementation project(":${it.name}")
     }
-    implementation 'cz.adamh:native-utils:1.0'
+    implementation 'cz.adamh:native-utils:1.1-SNAPSHOT'
     implementation 'org.slf4j:slf4j-api:2.0.6'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'

@@ -23,7 +23,7 @@ package de.unijena.bioinf.FragmentationTreeConstruction.computation.tree.ilp;
 import cz.adamh.utils.NativeUtils;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 
 public class CLPModel_JNI {
@@ -42,43 +42,96 @@ public class CLPModel_JNI {
     }
 
     static {
+        String prefix = null;
         String jniWrapper = null;
-        List<String> dependencies;
+        List<String> jarDependencies;
+        List<String> pathDependencies;
+        List<String> systemDependencies;
         String os = System.getProperty("os.name").toLowerCase();
-        String arch = System.getProperty("os.arch").toLowerCase();
+//        String arch = System.getProperty("os.arch").toLowerCase();
 //		System.out.println("os: " + os + ", arch: " + arch);
         if (os.contains("win")) {
             // NOTE: has to be in correct order for windows
-            if (arch.contains("64")) {
-                jniWrapper = "/win-x86-64/CLPModelWrapper_JNI.dll";
-                dependencies = Arrays.asList(
-                        "libstdc++-6", "libwinpthread-1", "libgmp-10", "zlib1", "libbz2-1", "libgcc_s_seh-1",
-                        "libquadmath-0", "libgfortran-5");
-            } else {
-                dependencies = Arrays.asList(
-                        "libstdc++-6", "libgcc_s_dw2-1", "libwinpthread-1", "libgmp-10", "zlib1", "libbz2-1", "libgfortran-5");
-            }
+            prefix = "/win-x86-64/";
+            jniWrapper = prefix + "CLPModelWrapper_JNI.dll";
+            jarDependencies = List.of(
+                    prefix + "libstdc++-6.dll",
+                    prefix + "libwinpthread-1.dll",
+                    prefix + "libgmp-10.dll",
+                    prefix + "zlib1.dll",
+                    prefix + "libbz2-1.dll",
+                    prefix + "libgcc_s_seh-1.dll",
+                    prefix + "libquadmath-0.dll",
+                    prefix + "libgfortran-5.dll"
+            );
+            pathDependencies = List.of(
+                    "stdc++",
+                    "winpthread",
+                    "gmp",
+                    "zlib1",
+                    "bz2",
+                    "gcc_s_seh",
+                    "quadmath",
+                    "fortran"
+            );
         } else if (os.contains("mac") || os.contains("darwin")) {
-            jniWrapper = "/mac-x86-64/libCLPModelWrapper_JNI.dylib";
+            prefix = "/mac-x86-64/";
+            jniWrapper = prefix + "libCLPModelWrapper_JNI.dylib";
             // fake pre-loading to circumvent lazy unpacking of resources
-            dependencies = Arrays.asList(
-                    "Clp", "CoinUtils", "Osi", "OsiClp", "coinblas", "coinglpk", "coinlapack", "coinmetis",
-                    "coinmumps", "gcc_s", "gfortran", "quadmath", "stdc++");
+            jarDependencies = List.of(
+                    prefix + "libCbc.3.dylib",
+                    prefix + "libCgl.1.dylib",
+                    prefix + "libClp.1.dylib",
+                    prefix + "libClpSolver.1.dylib",
+                    prefix + "libCoinUtils.3.dylib",
+                    prefix + "libOsi.1.dylib",
+                    prefix + "libOsiClp.1.dylib"
+            );
+            pathDependencies = List.of(
+                    "Cbc",
+                    "Cgl",
+                    "Clp",
+                    "ClpSolver",
+                    "CoinUtils",
+                    "Osi",
+                    "OsiClp"
+            );
         } else {
-            jniWrapper = "/linux-x86-64/libCLPModelWrapper_JNI.so";
-            // fake pre-loading to circumvent lazy unpacking of resources
-            dependencies = Arrays.asList(
-                    "Clp.1", "CoinUtils.3", "Osi.1", "OsiClp.1", "coinasl.1", "coinblas.1", "coinglpk.1", "coinlapack.1", "coinmetis.1",
-                    "coinmumps.1", "gcc_s.1", "gfortran.5", "gmp.10", "quadmath.0", "stdc++.6");
+            prefix = "/linux-x86-64/";
+            jniWrapper = prefix + "libCLPModelWrapper_JNI.so";
+
+            // to load from bundled jar
+            jarDependencies = List.of(
+                    prefix + "libCbc.so.3",
+                    prefix + "libCgl.so.1",
+                    prefix + "libClp.so.1",
+                    prefix + "libCoinUtils.so.3",
+//                    prefix + "libgcc_s.so.1",
+                    prefix + "libgfortran.so.5",
+                    prefix + "libOsi.so.1",
+                    prefix + "libOsiClp.so.1",
+                    prefix + "libquadmath.so.0",
+                    prefix + "libstdc++.so.6"
+            );
+            pathDependencies = List.of(
+                    "Cbc",
+                    "Cgl",
+                    "Clp",
+                    "CoinUtils",
+//                    "gcc_s", causes problems if not gcc ist used on the system (conda)?
+                    "gfortran",
+                    "Osi",
+                    "OsiClp",
+                    "quadmath",
+                    "stdc++"
+            );
         }
-        for (String dep : dependencies) {
-            try {
-                LoggerFactory.getLogger(CLPModel_JNI.class).debug("Loading: " + dep);
-                System.loadLibrary(dep);
-            } catch (UnsatisfiedLinkError e) {
-                LoggerFactory.getLogger(CLPModel_JNI.class).debug("Error when loading: " + dep, e);
-                // does not matter
-            }
+
+        try {
+            NativeUtils.loadLibrariesFromJar(jarDependencies, pathDependencies, false);
+        } catch (UnsatisfiedLinkError | IOException e) {
+            LoggerFactory.getLogger(CLPModel_JNI.class).error("Error when loading: " + jarDependencies, e);
+            throw new RuntimeException(e);
         }
 
         // load the wrapper library
