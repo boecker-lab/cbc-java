@@ -55,22 +55,22 @@ public class CLPModel_JNI {
             prefix = "/win-x86-64/";
             jniWrapper = prefix + "CLPModelWrapper_JNI.dll";
             jarDependencies = List.of(
-                    prefix + "libstdc++-6.dll",
                     prefix + "libwinpthread-1.dll",
+                    prefix + "libgcc_s_seh-1.dll",
+                    prefix + "libstdc++-6.dll",
                     prefix + "libgmp-10.dll",
                     prefix + "zlib1.dll",
                     prefix + "libbz2-1.dll",
-                    prefix + "libgcc_s_seh-1.dll",
                     prefix + "libquadmath-0.dll",
                     prefix + "libgfortran-5.dll"
             );
             pathDependencies = List.of(
-                    "stdc++",
                     "winpthread",
+                    "gcc_s_seh",
+                    "stdc++",
                     "gmp",
                     "zlib1",
                     "bz2",
-                    "gcc_s_seh",
                     "quadmath",
                     "fortran"
             );
