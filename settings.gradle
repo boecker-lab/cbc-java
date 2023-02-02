@@ -7,6 +7,6 @@ include 'cbc-java-jni-win-x86-64'
 include 'cbc-java-win-x86-64'
 include 'cbc-java-jni-mac-x86-64'
 include 'cbc-java-mac-x86-64'
-//include 'cbc-java-jni-mac-arm64'
-//include 'cbc-java-mac-arm64'
+include 'cbc-java-jni-mac-arm64'
+include 'cbc-java-mac-arm64'
 

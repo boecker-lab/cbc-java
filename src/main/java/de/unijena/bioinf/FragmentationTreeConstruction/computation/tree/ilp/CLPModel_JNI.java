@@ -75,53 +75,53 @@ public class CLPModel_JNI {
                     "fortran"
             );
         } else if (os.contains("mac") || os.contains("darwin")) {
-          if (arch.contains("x86")){
-            prefix = "/mac-x86-64/";
-            jniWrapper = prefix + "libCLPModelWrapper_JNI.dylib";
-            // fake pre-loading to circumvent lazy unpacking of resources
-            jarDependencies = List.of(
-                    prefix + "libCbc.3.dylib",
-                    prefix + "libCgl.1.dylib",
-                    prefix + "libClp.1.dylib",
-                    prefix + "libClpSolver.1.dylib",
-                    prefix + "libCoinUtils.3.dylib",
-                    prefix + "libOsi.1.dylib",
-                    prefix + "libOsiClp.1.dylib"
-            );
-            pathDependencies = List.of(
-                    "Cbc",
-                    "Cgl",
-                    "Clp",
-                    "ClpSolver",
-                    "CoinUtils",
-                    "Osi",
-                    "OsiClp"
-            );
-          } else {
-            prefix = "/mac-arm64/";
-            jniWrapper = prefix + "libCLPModelWrapper_JNI.dylib";
-            // fake pre-loading to circumvent lazy unpacking of resources
-            jarDependencies = List.of(
-                    prefix + "libc++.1.dylib",
-                    prefix + "libCbc.3.dylib",
-                    prefix + "libClp.1.dylib",
-                    prefix + "libCoinUtils.3.dylib",
-                    prefix + "libgcc_s.1.1.dylib",
-                    prefix + "libgfortran.5.dylib",
-                    prefix + "libOsiClp.1.dylib",
-                    prefix + "libquadmath.0.dylib"
-            );
-            pathDependencies = List.of(
-                    "c++",
-                    "Cbc",
-                    "Clp",
-                    "CoinUtils",
-                    "gcc_s",
-                    "gfortran",
-                    "OsiClp",
-                    "quadmath"
-            );
-          }
+            if (arch.contains("arm64")) {
+                prefix = "/mac-arm64/";
+                jniWrapper = prefix + "libCLPModelWrapper_JNI.dylib";
+                // fake pre-loading to circumvent lazy unpacking of resources
+                jarDependencies = List.of(
+                        prefix + "libc++.1.dylib",
+                        prefix + "libCbc.3.dylib",
+                        prefix + "libClp.1.dylib",
+                        prefix + "libCoinUtils.3.dylib",
+                        prefix + "libgcc_s.1.1.dylib",
+                        prefix + "libgfortran.5.dylib",
+                        prefix + "libOsiClp.1.dylib",
+                        prefix + "libquadmath.0.dylib"
+                );
+                pathDependencies = List.of(
+                        "c++",
+                        "Cbc",
+                        "Clp",
+                        "CoinUtils",
+                        "gcc_s",
+                        "gfortran",
+                        "OsiClp",
+                        "quadmath"
+                );
+            } else {
+                prefix = "/mac-x86-64/";
+                jniWrapper = prefix + "libCLPModelWrapper_JNI.dylib";
+                // fake pre-loading to circumvent lazy unpacking of resources
+                jarDependencies = List.of(
+                        prefix + "libCbc.3.dylib",
+                        prefix + "libCgl.1.dylib",
+                        prefix + "libClp.1.dylib",
+                        prefix + "libClpSolver.1.dylib",
+                        prefix + "libCoinUtils.3.dylib",
+                        prefix + "libOsi.1.dylib",
+                        prefix + "libOsiClp.1.dylib"
+                );
+                pathDependencies = List.of(
+                        "Cbc",
+                        "Cgl",
+                        "Clp",
+                        "ClpSolver",
+                        "CoinUtils",
+                        "Osi",
+                        "OsiClp"
+                );
+            }
         } else {
             prefix = "/linux-x86-64/";
             jniWrapper = prefix + "libCLPModelWrapper_JNI.so";
