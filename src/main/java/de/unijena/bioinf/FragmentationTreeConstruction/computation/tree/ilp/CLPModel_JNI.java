@@ -48,7 +48,7 @@ public class CLPModel_JNI {
         List<String> pathDependencies;
         List<String> systemDependencies;
         String os = System.getProperty("os.name").toLowerCase();
-//        String arch = System.getProperty("os.arch").toLowerCase();
+        String arch = System.getProperty("os.arch").toLowerCase();
 //		System.out.println("os: " + os + ", arch: " + arch);
         if (os.contains("win")) {
             // NOTE: has to be in correct order for windows
@@ -75,6 +75,7 @@ public class CLPModel_JNI {
                     "fortran"
             );
         } else if (os.contains("mac") || os.contains("darwin")) {
+          if (arch.contains("x86")){
             prefix = "/mac-x86-64/";
             jniWrapper = prefix + "libCLPModelWrapper_JNI.dylib";
             // fake pre-loading to circumvent lazy unpacking of resources
@@ -96,6 +97,31 @@ public class CLPModel_JNI {
                     "Osi",
                     "OsiClp"
             );
+          } else {
+            prefix = "/mac-arm64/";
+            jniWrapper = prefix + "libCLPModelWrapper_JNI.dylib";
+            // fake pre-loading to circumvent lazy unpacking of resources
+            jarDependencies = List.of(
+                    prefix + "libc++.1.dylib",
+                    prefix + "libCbc.3.dylib",
+                    prefix + "libClp.1.dylib",
+                    prefix + "libCoinUtils.3.dylib",
+                    prefix + "libgcc_s.1.1.dylib",
+                    prefix + "libgfortran.5.dylib",
+                    prefix + "libOsiClp.1.dylib",
+                    prefix + "libquadmath.0.dylib"
+            );
+            pathDependencies = List.of(
+                    "c++",
+                    "Cbc",
+                    "Clp",
+                    "CoinUtils",
+                    "gcc_s",
+                    "gfortran",
+                    "OsiClp",
+                    "quadmath"
+            );
+          }
         } else {
             prefix = "/linux-x86-64/";
             jniWrapper = prefix + "libCLPModelWrapper_JNI.so";
