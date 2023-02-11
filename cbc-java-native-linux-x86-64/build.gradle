@@ -1,6 +1,6 @@
 jar {
-    archiveClassifier = "mac-arm64"
-    archiveBaseName ="cbc-java-jni"
+    archiveClassifier = "linux-x86-64"
+    archiveBaseName ="cbc-java-native"
 }
 
 publishing {
