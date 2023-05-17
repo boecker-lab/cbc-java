@@ -128,7 +128,6 @@ public class CLPModel_JNI {
 
             // to load from bundled jar
             jarDependencies = List.of(
-                    prefix + "liblapack.so.3",
                     prefix + "libCbc.so.3",
                     prefix + "libCgl.so.1",
                     prefix + "libClp.so.1",
