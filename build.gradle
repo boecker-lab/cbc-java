@@ -24,8 +24,8 @@ allprojects {
 
         repositories {
             maven {
-                url= project.findProperty("de.unijena.bioinf.build.artifactory.url")
-                name="GitLab"
+                url = project.findProperty("de.unijena.bioinf.build.artifactory.url")
+                name = "GitLab"
                 credentials(HttpHeaderCredentials) {
                     name = project.findProperty("de.unijena.bioinf.build.artifactory.token.name")
                     value = project.findProperty("de.unijena.bioinf.build.artifactory.token")
@@ -56,6 +56,16 @@ dependencies {
     //all sub projects as dependency
     implementation 'cz.adamh:native-utils:1.1-SNAPSHOT'
     implementation 'org.slf4j:slf4j-api:2.0.6'
+    testImplementation project('cbc-java-jni-linux-x86-64')
+    testImplementation project('cbc-java-native-linux-x86-64')
+//testImplementation project( 'cbc-java-jni-linux-arm64')
+//testImplementation project( 'cbc-java-native-linux-arm64')
+    testImplementation project('cbc-java-jni-win-x86-64')
+    testImplementation project('cbc-java-native-win-x86-64')
+    testImplementation project('cbc-java-jni-mac-x86-64')
+    testImplementation project('cbc-java-native-mac-x86-64')
+    testImplementation project('cbc-java-jni-mac-arm64')
+    testImplementation project('cbc-java-native-mac-arm64')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testImplementation("org.junit.vintage:junit-vintage-engine:5.10.0")
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
