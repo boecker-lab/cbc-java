@@ -75,7 +75,7 @@ public class CLPModel_JNI {
                     "fortran"
             );
         } else if (os.contains("mac") || os.contains("darwin")) {
-            if (arch.contains("arm64")) {
+            if (arch.contains("arm64") || os.contains("aarch64")) {
                 prefix = "/mac-arm64/";
                 jniWrapper = prefix + "libCLPModelWrapper_JNI.dylib";
                 // fake pre-loading to circumvent lazy unpacking of resources
