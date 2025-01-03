@@ -24,6 +24,7 @@ import cz.adamh.utils.NativeUtils;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CLPModel_JNI {
 
@@ -44,22 +45,24 @@ public class CLPModel_JNI {
         String os = System.getProperty("os.name").toLowerCase();
         String arch = System.getProperty("os.arch").toLowerCase();
         CLPLibs libs = CLPLibs.of(os, arch);
-
+        List<String> jarDependencies = libs.getJarDependencies();
+        List<String> pathDependencies = libs.getPathDependencies();
+        LoggerFactory.getLogger(CLPModel_JNI.class).info("Loading CBC libs for detected architecture `{}-{}` from prefix '{}' with '{}' jar and '{}' path dependencies.", os, arch, libs.getPrefix(), jarDependencies.size(), pathDependencies.size());
         try {
-            NativeUtils.loadLibrariesFromJar(libs.getJarDependencies(), libs.getPathDependencies(), false);
+            NativeUtils.loadLibrariesFromJar(jarDependencies, pathDependencies, false);
         } catch (UnsatisfiedLinkError | IOException e) {
-            //try load x86 for rosetta support.
+            //try load x86 as fallback for rosetta support.
             if (os.contains("mac") || os.contains("darwin")){
-                LoggerFactory.getLogger(CLPModel_JNI.class).error("Could not find libs for {}. Try x86-64 as fallback.", arch);
+                LoggerFactory.getLogger(CLPModel_JNI.class).error("Could not find libs for {}. Try x86-64 as fallback.", arch, e);
                 libs = CLPLibs.of(os, "x86-64");
                 try {
-                    LoggerFactory.getLogger(CLPModel_JNI.class).error("Error when loading: {}", String.join(", ", libs.getJarDependencies()), e);
+                    LoggerFactory.getLogger(CLPModel_JNI.class).error("Error when loading: {}", String.join(", ", jarDependencies), e);
                     NativeUtils.loadLibrariesFromJar(libs.getJarDependencies(), libs.getPathDependencies(), false);
                 } catch (UnsatisfiedLinkError | IOException ex) {
                     throw new RuntimeException(ex);
                 }
             }else{
-                LoggerFactory.getLogger(CLPModel_JNI.class).error("Error when loading: {}", String.join(", ", libs.getJarDependencies()), e);
+                LoggerFactory.getLogger(CLPModel_JNI.class).error("Error when loading: {}", String.join(", ", jarDependencies), e);
                 throw new RuntimeException(e);
             }
         }

@@ -1,0 +1,4 @@
+jar {
+    archiveClassifier = "linux-arm64"
+    archiveBaseName ="cbc-java-native"
+}

@@ -2,11 +2,3 @@ jar {
     archiveClassifier = "win-x86-64"
     archiveBaseName ="cbc-java-jni"
 }
-
-publishing {
-    publications {
-        javaCBC(MavenPublication) {
-            artifactId jar.baseName
-        }
-    }
-}

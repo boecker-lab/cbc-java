@@ -2,11 +2,3 @@ jar {
     archiveClassifier = "mac-arm64"
     archiveBaseName ="cbc-java-native"
 }
-
-publishing {
-    publications {
-        javaCBC(MavenPublication) {
-            artifactId jar.baseName
-        }
-    }
-}
