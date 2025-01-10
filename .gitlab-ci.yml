@@ -19,7 +19,7 @@ unitTests:
   stage: test-libs
   script:
     - ./gradlew test --stacktrace
-    - ./gradlew publishMavenJavaPublicationToGitLabRepository --stacktrace
+    - ./gradlew publishAllPublicationsToGitLabRepository --stacktrace
   artifacts:
     when: on_failure
     reports:
