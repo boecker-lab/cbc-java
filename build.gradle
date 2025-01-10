@@ -1,13 +1,15 @@
-plugins {
-    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
-}
-
 description 'JNI Java library (cbc-java) for COIN-OR CBC Solver'
 
+ext {
+    slf4j_version = '1.7.36'
+}
+
+wrapper {
+    version = "8.12"
+}
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
-    apply plugin: 'com.google.cloud.artifactregistry.gradle-plugin'
 
 
     sourceCompatibility = 11
@@ -19,8 +21,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven {
-            name = "BG-maven-public"
-            url "artifactregistry://europe-west4-maven.pkg.dev/bright-giant/maven-public"
+            url "https://gitlab.com/api/v4/groups/bright-giant/-/packages/maven"
         }
     }
 
@@ -36,32 +37,56 @@ publishing {
 
         javaCbcJni(MavenPublication) {
             artifactId 'cbc-java-jni'
-            subprojects.findAll {it.name.contains('-jni-')}.each {artifact(it.tasks.findByName("jar")) }
-            println("JNI: $artifacts" )
+            subprojects.findAll { it.name.contains('-jni-') }.each { artifact(it.tasks.findByName("jar")) }
+            println("JNI: $artifacts")
         }
 
         javaCbcNative(MavenPublication) {
             artifactId 'cbc-java-native'
-            subprojects.findAll {it.name.contains('-native-')}.each {artifact(it.tasks.findByName("jar")) }
+            subprojects.findAll { it.name.contains('-native-') }.each { artifact(it.tasks.findByName("jar")) }
             println("NATIVE: $artifacts")
         }
     }
     repositories {
         maven {
-            name = "BG-maven-public"
-            url "artifactregistry://europe-west4-maven.pkg.dev/bright-giant/maven-public"
+            name = "GitLab"
+
+            if (System.getenv("CI_JOB_TOKEN") != null) {
+                url = "${System.getenv('CI_API_V4_URL')}/projects/${System.getenv('CI_PROJECT_ID')}/packages/maven"
+
+                credentials(HttpHeaderCredentials) {
+                    name = "Job-Token"
+                    value = System.getenv("CI_JOB_TOKEN")
+                }
+                authentication {
+                    header(HttpHeaderAuthentication)
+                }
+            } else {
+                url = project.findProperty("java-cbc.build.artifactory.url") as String
+
+                credentials(PasswordCredentials) {
+                    username = project.findProperty("java-cbc.build.artifactory.username") as String
+                    password = project.findProperty("java-cbc.build.artifactory.token") as String
+                    // the variable resides in $GRADLE_USER_HOME/gradle.properties
+                    // https://docs.gradle.org/current/userguide/directory_layout.html#dir:gradle_user_home
+                }
+                authentication {
+                    basic(BasicAuthentication)
+                }
+            }
         }
     }
 }
 
+
 dependencies {
     //all sub projects as dependency
     implementation 'cz.adamh:native-utils:1.3.1'
-    implementation 'org.slf4j:slf4j-api:2.0.6'
+    implementation "org.slf4j:slf4j-api:$slf4j_version"
     testImplementation project('cbc-java-jni-linux-x86-64')
     testImplementation project('cbc-java-native-linux-x86-64')
-//testImplementation project( 'cbc-java-jni-linux-arm64')
-//testImplementation project( 'cbc-java-native-linux-arm64')
+    testImplementation project('cbc-java-jni-linux-arm64')
+    testImplementation project('cbc-java-native-linux-arm64')
     testImplementation project('cbc-java-jni-win-x86-64')
     testImplementation project('cbc-java-native-win-x86-64')
     testImplementation project('cbc-java-jni-mac-x86-64')

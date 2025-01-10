@@ -1,15 +1,26 @@
-stages:
-  - build
+# This is the Gradle build system for JVM applications
+# https://gradle.org/
+# https://github.com/gradle/gradle
+#image: gradle:alpine
+default:
+  image: azul/zulu-openjdk:21-latest
+  tags: [$RUNNER_TAGS]
 
-java-build:
-  # select the most appropriate image for your project
-  image: azul/zulu-openjdk:11-latest
+# Disable the Gradle daemon for Continuous Integration servers as correctness
+# is usually a priority over speed in CI environments. Using a fresh
+# runtime for each build is more reliable since the runtime is completely
+# isolated from any previous builds.
+stages:
+  - test-libs
+
+unitTests:
   variables:
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-    ARTIFACTORY_URL: "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/maven"
-  stage: build
+  stage: test-libs
   script:
-    - ./gradlew publishJavaCBCPublicationToGitLabRepository -P "de.unijena.bioinf.build.artifactory.url=$ARTIFACTORY_URL" -P "de.unijena.bioinf.build.artifactory.token=$CI_JOB_TOKEN" -P "de.unijena.bioinf.build.artifactory.token.name=JOB-TOKEN"
-    - ./gradlew artifactoryPublish -P "de.unijena.bioinf.build.artifactory.username=$ARTIFACTORY_USERNAME" -P "de.unijena.bioinf.build.artifactory.password=$ARTIFACTORY_TOKEN"
-  tags:
-    - kubernetes
+    - ./gradlew test --stacktrace
+    - ./gradlew publishMavenJavaPublicationToGitLabRepository --stacktrace
+  artifacts:
+    when: on_failure
+    reports:
+      junit: "**/build/test-results/test/TEST-*.xml"
