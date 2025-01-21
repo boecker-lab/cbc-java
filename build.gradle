@@ -52,8 +52,10 @@ publishing {
             name = "GitLab"
 
             if (System.getenv("CI_JOB_TOKEN") != null) {
-                url = "${System.getenv('CI_API_V4_URL')}/projects/${System.getenv('CI_PROJECT_ID')}/packages/maven"
-
+                // local registry 
+                // url = "${System.getenv('CI_API_V4_URL')}/projects/${System.getenv('CI_PROJECT_ID')}/packages/maven"
+                //central public registry
+                url = System.getenv('PUBLIC_REGISTRY_URL')
                 credentials(HttpHeaderCredentials) {
                     name = "Job-Token"
                     value = System.getenv("CI_JOB_TOKEN")
