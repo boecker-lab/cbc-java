@@ -8,12 +8,12 @@ public class CLPLibs {
     public static final List<String> LINUX_ARM64_JAR = List.of(
             LINUX_ARM64_PREFIX + "libstdc++.so.6",
 
-            LINUX_ARM64_PREFIX + "libCoinUtils.so.0",
-            LINUX_ARM64_PREFIX + "libOsi.so.0",
-            LINUX_ARM64_PREFIX + "libClp.so.0",
-            LINUX_ARM64_PREFIX + "libOsiClp.so.0",
-            LINUX_ARM64_PREFIX + "libCgl.so.0",
-            LINUX_ARM64_PREFIX + "libCbc.so.0"
+            LINUX_ARM64_PREFIX + "libCoinUtils.so.3",
+            LINUX_ARM64_PREFIX + "libOsi.so.1",
+            LINUX_ARM64_PREFIX + "libClp.so.1",
+            LINUX_ARM64_PREFIX + "libOsiClp.so.1",
+            LINUX_ARM64_PREFIX + "libCgl.so.1",
+            LINUX_ARM64_PREFIX + "libCbc.so.3"
     );
     ;
     public static final List<String> LINUX_ARM64_PATH = List.of(
