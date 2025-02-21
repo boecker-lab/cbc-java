@@ -1,0 +1,21 @@
+name: test_linux
+
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    container:
+      image: azul/zulu-openjdk:21-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: test
+        run: ./gradlew test --stacktrace
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
