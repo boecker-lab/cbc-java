@@ -32,6 +32,7 @@ public class CLPLibs {
             LINUX_X86_64_PREFIX + "libquadmath.so.0",
             LINUX_X86_64_PREFIX + "libgfortran.so.5",
             LINUX_X86_64_PREFIX + "liblapack.so.3",
+            LINUX_X86_64_PREFIX + "libblas.so.3",
 
             LINUX_X86_64_PREFIX + "libstdc++.so.6",
 
@@ -47,6 +48,7 @@ public class CLPLibs {
             "quadmath",
             "gfortran",
             "lapack",
+            "blas",
 
             "stdc++",
 
