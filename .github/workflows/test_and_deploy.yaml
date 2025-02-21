@@ -41,7 +41,7 @@ jobs:
           java-version: '21'
 
       - name: Publishing
-        run: ./gradlew publishAllPublicationsToGitLabRepository --stacktrace -P "java-cbc.build.artifactory.token=${{ secrets.GITLAB_REGITRY_TOKEN }}" -P "java-cbc.build.artifactory.username=${{ vars.GITLAB_REGITRY_USER }}" -P "java-cbc.build.artifactory.url=${{ vars.GITLAB_REGITRY_MAVEN_URL }}"
+        run: ./gradlew publishAllPublicationsToGitLabRepository --stacktrace -P "java-cbc.build.artifactory.token=${{ secrets.GITLAB_REGISTRY_TOKEN }}" -P "java-cbc.build.artifactory.username=${{ vars.GITLAB_REGISTRY_USER }}" -P "java-cbc.build.artifactory.url=${{ vars.GITLAB_REGISTRY_MAVEN_URL }}"
 
 #      - name: Setup tmate session
 #        if: ${{ failure() }}
