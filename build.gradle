@@ -67,10 +67,11 @@ publishing {
             //Use user based token from ENV variables
             } else if (System.getenv("GITLAB_REGITRY_TOKEN") != null) {
                 println("Using ENV based User Token auth for mavenPublish!")
+
                 url = System.getenv('GITLAB_REGISTRY_MAVEN_URL')
-                credentials(HttpHeaderCredentials) {
-                    name = System.getenv("GITLAB_REGISTRY_USER")
-                    value = System.getenv("GITLAB_REGITRY_TOKEN")
+                credentials(PasswordCredentials) {
+                    username = System.getenv("GITLAB_REGISTRY_USER")
+                    password = System.getenv("GITLAB_REGITRY_TOKEN")
                 }
                 authentication {
                     header(BasicAuthentication)
