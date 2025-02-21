@@ -26,23 +26,23 @@ jobs:
         if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3
 
-    publish:
-      needs: test  # Only runs if 'test' succeeds
-      if: github.ref == 'refs/heads/main'  # Only runs on main branch
+  publish:
+    needs: test  # Only runs if 'test' succeeds
+    if: github.ref == 'refs/heads/main'  # Only runs on main branch
 
-      runs-on: ubuntu-20.04
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-        - uses: actions/setup-java@v4
-          with:
-            distribution: 'zulu'
-            java-version: '21'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
 
-        - name: Publishing
-          run:  ./gradlew publishAllPublicationsToGitLabRepository --stacktrace
+      - name: Publishing
+        run: ./gradlew publishAllPublicationsToGitLabRepository --stacktrace
 
-        - name: Setup tmate session
-          if: ${{ failure() }}
-          uses: mxschmitt/action-tmate@v3
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
