@@ -15,7 +15,7 @@ allprojects {
     sourceCompatibility = 11
     targetCompatibility = 11
     group 'de.unijena.bioinf.cbc-java'
-    version '2.10.12' //corresponds tp cbc version
+    version '2.10.12.1' //corresponds tp cbc version with additional build number for changes of the packaging.
 
     repositories {
         mavenLocal()
@@ -52,7 +52,8 @@ publishing {
             name = "GitLab"
 
             if (System.getenv("CI_JOB_TOKEN") != null) {
-                // local registry 
+                println("Using ENV based JOB Token auth for mavenPublish!")
+                // local registry
                 // url = "${System.getenv('CI_API_V4_URL')}/projects/${System.getenv('CI_PROJECT_ID')}/packages/maven"
                 //central public registry
                 url = System.getenv('PUBLIC_REGISTRY_URL')
@@ -63,9 +64,23 @@ publishing {
                 authentication {
                     header(HttpHeaderAuthentication)
                 }
-            } else {
-                url = project.findProperty("java-cbc.build.artifactory.url") as String
+            //Use user based token from ENV variables
+            } else if (System.getenv("GITLAB_REGITRY_TOKEN") != null) {
+                println("Using ENV based User Token auth for mavenPublish!")
+                url = System.getenv('GITLAB_REGISTRY_MAVEN_URL')
+                credentials(HttpHeaderCredentials) {
+                    name = System.getenv("GITLAB_REGISTRY_USER")
+                    value = System.getenv("GITLAB_REGITRY_TOKEN")
+                }
+                authentication {
+                    header(BasicAuthentication)
+                }
 
+                //Use user based token from gradle.properties file
+            } else {
+                println("Using gradle.properties based User Token auth for mavenPublish!")
+
+                url = project.findProperty("java-cbc.build.artifactory.url") as String
                 credentials(PasswordCredentials) {
                     username = project.findProperty("java-cbc.build.artifactory.username") as String
                     password = project.findProperty("java-cbc.build.artifactory.token") as String
