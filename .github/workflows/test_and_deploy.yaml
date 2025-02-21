@@ -1,9 +1,7 @@
 name: test_and_publish
 
-
-push:
-  branches:
-    - "**"  # Runs on push to any branch
+on:
+  push:
   workflow_dispatch:  # Allows manual execution
 
 jobs:
