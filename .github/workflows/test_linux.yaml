@@ -7,11 +7,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    container:
-      image: azul/zulu-openjdk:21-latest
+    # container:
+    #   image: azul/zulu-openjdk:21-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+        distribution: 'zulu'
+        java-version: '21'
 
       - name: test
         run: ./gradlew test --stacktrace
