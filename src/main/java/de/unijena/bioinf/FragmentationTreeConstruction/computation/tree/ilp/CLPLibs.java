@@ -63,38 +63,38 @@ public class CLPLibs {
     public static final String MAC_JNI_WRAPPER_NAME = "libCLPModelWrapper_JNI.dylib";
     public static final String MAC_ARM64_PREFIX = "/mac-arm64/";
     public static final List<String> MAC_ARM64_JAR = List.of(
-            MAC_ARM64_PREFIX + "libc++.1.dylib",
+            // MAC_ARM64_PREFIX + "libc++.1.dylib",
             MAC_ARM64_PREFIX + "libCbc.3.dylib",
-            MAC_ARM64_PREFIX + "libCgl.1.dylib",
-            MAC_ARM64_PREFIX + "libClp.1.dylib",
-            MAC_ARM64_PREFIX + "libClpSolver.1.dylib",
+            MAC_ARM64_PREFIX + "libCgl.0.dylib",
+            MAC_ARM64_PREFIX + "libClp.0.dylib",
+            MAC_ARM64_PREFIX + "libClpSolver.0.dylib",
             MAC_ARM64_PREFIX + "libCoinUtils.3.dylib",
-            MAC_ARM64_PREFIX + "libgcc_s.1.1.dylib",
-            MAC_ARM64_PREFIX + "libgfortran.5.dylib",
-            MAC_ARM64_PREFIX + "libOsi.1.dylib",
-            MAC_ARM64_PREFIX + "libOsiClp.1.dylib",
-            MAC_ARM64_PREFIX + "libquadmath.0.dylib",
-            MAC_ARM64_PREFIX + "liblapack.3.dylib",
-            MAC_ARM64_PREFIX + "libomp.dylib",
-            MAC_ARM64_PREFIX + "libreadline.8.dylib",
-            MAC_ARM64_PREFIX + "libncurses.6.dylib"
+            // MAC_ARM64_PREFIX + "libgcc_s.1.1.dylib",
+            // MAC_ARM64_PREFIX + "libgfortran.5.dylib",
+            MAC_ARM64_PREFIX + "libOsi.0.dylib",
+            MAC_ARM64_PREFIX + "libOsiClp.0.dylib"
+            // MAC_ARM64_PREFIX + "libquadmath.0.dylib",
+            // MAC_ARM64_PREFIX + "liblapack.3.dylib",
+            // MAC_ARM64_PREFIX + "libomp.dylib",
+            // MAC_ARM64_PREFIX + "libreadline.8.dylib",
+            // MAC_ARM64_PREFIX + "libncurses.6.dylib"
     );
     public static final List<String> MAC_ARM64_PATH = List.of(
-            "c++",
+            // "c++",
             "Cbc",
             "Cgl",
             "Clp",
             "ClpSolver",
             "CoinUtils",
-            "gcc_s",
-            "gfortran",
+            // "gcc_s",
+            // "gfortran",
             "Osi",
-            "OsiClp",
-            "quadmath",
-            "lapack",
-            "omp",
-            "libreadline",
-            "ncurses"
+            "OsiClp"
+            // "quadmath",
+            // "lapack",
+            // "omp",
+            // "libreadline",
+            // "ncurses"
     );
     ;
 
