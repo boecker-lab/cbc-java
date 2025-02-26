@@ -15,7 +15,7 @@ allprojects {
     sourceCompatibility = 11
     targetCompatibility = 11
     group 'de.unijena.bioinf.cbc-java'
-    version '2.10.12.1' //corresponds tp cbc version with additional build number for changes of the packaging.
+    version '2.10.12.2' //corresponds tp cbc version with additional build number for changes of the packaging.
 
     repositories {
         mavenLocal()
