@@ -6,23 +6,33 @@ public class CLPLibs {
     public static final String LINUX_JNI_WRAPPER_NAME = "libCLPModelWrapper_JNI.so";
     public static final String LINUX_ARM64_PREFIX = "/linux-arm64/";
     public static final List<String> LINUX_ARM64_JAR = List.of(
+            LINUX_ARM64_PREFIX + "libgfortran.so.5",
+            LINUX_ARM64_PREFIX + "liblapack.so.3",
+            LINUX_ARM64_PREFIX + "libblas.so.3",
+
             LINUX_ARM64_PREFIX + "libstdc++.so.6",
 
             LINUX_ARM64_PREFIX + "libCoinUtils.so.3",
             LINUX_ARM64_PREFIX + "libOsi.so.1",
             LINUX_ARM64_PREFIX + "libClp.so.1",
             LINUX_ARM64_PREFIX + "libOsiClp.so.1",
+            LINUX_ARM64_PREFIX + "libClpSolver.so.1",
             LINUX_ARM64_PREFIX + "libCgl.so.1",
             LINUX_ARM64_PREFIX + "libCbc.so.3"
     );
     ;
     public static final List<String> LINUX_ARM64_PATH = List.of(
+            "gfortran",
+            "lapack",
+            "blas",
+
             "stdc++",
 
             "CoinUtils",
             "Osi",
             "Clp",
             "OsiClp",
+            "ClpSolver",
             "Cgl",
             "Cbc"
     );
@@ -40,6 +50,7 @@ public class CLPLibs {
             LINUX_X86_64_PREFIX + "libOsi.so.1",
             LINUX_X86_64_PREFIX + "libClp.so.1",
             LINUX_X86_64_PREFIX + "libOsiClp.so.1",
+            LINUX_X86_64_PREFIX + "libClpSolver.so.1",
             LINUX_X86_64_PREFIX + "libCgl.so.1",
             LINUX_X86_64_PREFIX + "libCbc.so.3"
     );
@@ -56,6 +67,7 @@ public class CLPLibs {
             "Osi",
             "Clp",
             "OsiClp",
+            "ClpSolver",
             "Cgl",
             "Cbc"
     );
@@ -65,14 +77,14 @@ public class CLPLibs {
     public static final List<String> MAC_ARM64_JAR = List.of(
             // MAC_ARM64_PREFIX + "libc++.1.dylib",
             MAC_ARM64_PREFIX + "libCbc.3.dylib",
-            MAC_ARM64_PREFIX + "libCgl.0.dylib",
-            MAC_ARM64_PREFIX + "libClp.0.dylib",
-            MAC_ARM64_PREFIX + "libClpSolver.0.dylib",
+            MAC_ARM64_PREFIX + "libCgl.1.dylib",
+            MAC_ARM64_PREFIX + "libClp.1.dylib",
+            MAC_ARM64_PREFIX + "libClpSolver.1.dylib",
             MAC_ARM64_PREFIX + "libCoinUtils.3.dylib",
             // MAC_ARM64_PREFIX + "libgcc_s.1.1.dylib",
             // MAC_ARM64_PREFIX + "libgfortran.5.dylib",
-            MAC_ARM64_PREFIX + "libOsi.0.dylib",
-            MAC_ARM64_PREFIX + "libOsiClp.0.dylib"
+            MAC_ARM64_PREFIX + "libOsi.1.dylib",
+            MAC_ARM64_PREFIX + "libOsiClp.1.dylib"
             // MAC_ARM64_PREFIX + "libquadmath.0.dylib",
             // MAC_ARM64_PREFIX + "liblapack.3.dylib",
             // MAC_ARM64_PREFIX + "libomp.dylib",
@@ -102,12 +114,12 @@ public class CLPLibs {
     ;
     public static final List<String> MAC_X86_64_JAR = List.of(
             MAC_X86_64_PREFIX + "libCbc.3.dylib",
-            MAC_X86_64_PREFIX + "libCgl.1.dylib",
-            MAC_X86_64_PREFIX + "libClp.1.dylib",
-            MAC_X86_64_PREFIX + "libClpSolver.1.dylib",
+            MAC_X86_64_PREFIX + "libCgl.0.dylib",
+            MAC_X86_64_PREFIX + "libClp.0.dylib",
+            MAC_X86_64_PREFIX + "libClpSolver.0.dylib",
             MAC_X86_64_PREFIX + "libCoinUtils.3.dylib",
-            MAC_X86_64_PREFIX + "libOsi.1.dylib",
-            MAC_X86_64_PREFIX + "libOsiClp.1.dylib"
+            MAC_X86_64_PREFIX + "libOsi.0.dylib",
+            MAC_X86_64_PREFIX + "libOsiClp.0.dylib"
     );
     ;
     public static final List<String> MAC_X86_64_PATH = List.of(
