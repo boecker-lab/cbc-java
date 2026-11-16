@@ -9,7 +9,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-22.04-arm, windows-2019, macos-13, macos-14]
+        # ubuntu-20.04, windows-2019 and macos-13 are retired runner images
+        os: [ubuntu-24.04, ubuntu-24.04-arm, windows-2022, macos-15-intel, macos-15]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,7 +31,7 @@ jobs:
     needs: test  # Only runs if 'test' succeeds
     if: github.ref == 'refs/heads/main'  # Only runs on main branch
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
