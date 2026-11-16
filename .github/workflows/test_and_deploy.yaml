@@ -8,6 +8,8 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      # test every platform even if one fails, each has its own binaries
+      fail-fast: false
       matrix:
         # ubuntu-20.04, windows-2019 and macos-13 are retired runner images
         os: [ubuntu-24.04, ubuntu-24.04-arm, windows-2022, macos-15-intel, macos-15]

@@ -140,7 +140,7 @@ public class CLPLibs {
             WIN_X86_64_PREFIX + "libgcc_s_seh-1.dll",
             WIN_X86_64_PREFIX + "libstdc++-6.dll",
             WIN_X86_64_PREFIX + "libgmp-10.dll",
-            WIN_X86_64_PREFIX + "zlib1.dll",
+            WIN_X86_64_PREFIX + "libz-1.dll",
             WIN_X86_64_PREFIX + "libbz2-1.dll",
             WIN_X86_64_PREFIX + "libquadmath-0.dll",
             WIN_X86_64_PREFIX + "libgfortran-5.dll"
@@ -150,7 +150,7 @@ public class CLPLibs {
             "gcc_s_seh",
             "stdc++",
             "gmp",
-            "zlib1",
+            "libz-1",
             "bz2",
             "quadmath",
             "fortran"
